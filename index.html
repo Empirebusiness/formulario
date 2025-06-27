@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empire Business - Reconhecimento de Marcas Globais</title>
+    <style>
+        :root {
+            --azul-escuro: #0a2540;
+            --azul-medio: #1a4b7a;
+            --amarelo: #ffd700;
+            --amarelo-claro: #ffecb3;
+            --branco: #ffffff;
+            --cinza-claro: #f5f5f7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--cinza-claro);
+            color: var(--azul-escuro);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* Marca d'água do brasão */
+        body::after {
+            content: "";
+            background-image: url('seu-brasao.png');
+            background-size: 300px;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.05;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* Cabeçalho com espaço para logo */
+        .header-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+        
+        .logo-container {
+            text-align: center;
+        }
+        
+        .logo-img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--azul-escuro), var(--azul-medio));
+            color: var(--branco);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(10, 37, 64, 0.2);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--amarelo);
+            line-height: 1.3;
+        }
+        
+        header .slogan {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-weight: 300;
+        }
+        
+        .destaque-amarelo {
+            background-color: var(--amarelo-claro);
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border-left: 5px solid var(--amarelo);
+        }
+        
+        .destaque-amarelo h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+        }
+        
+        .texto-destaque {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+        
+        .vantagens {
+            background-color: var(--branco);
+            padding: 30px;
+            border-radius: 8px;
+            margin: 30px 0;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .vantagens h2 {
+            color: var(--azul-medio);
+            margin-bottom: 20px;
+        }
+        
+        .vantagens ul {
+            list-style-type: none;
+        }
+        
+        .vantagens li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .vantagens li:before {
+            content: "✓";
+            color: var(--amarelo);
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .texto-discreto {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .observacoes {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .form-container {
+            background-color: var(--branco);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            margin-top: 40px;
+            border-top: 5px solid var(--amarelo);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--amarelo);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        
+        .checkbox-option input {
+            margin-right: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--amarelo);
+            color: var(--azul-escuro);
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            background-color: #e6c200;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .logo-img {
+                max-width: 200px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho com espaço para logo -->
+        <div class="header-logo">
+            <div class="logo-container">
+                <!-- Substitua pela sua logo -->
+                <img src="EMPIRE-BUSINESS-logo.png" alt="EMPIRE BUSINESS Logo" class="logo-img">
+            </div>
+        </div>
+        
+        <header>
+            <h1>Pré-Inscrição no Evento Empire Business<br>Reconhecimento de Marcas Globais</h1>
+            <p class="slogan">Ambiente, pessoas e conhecimentos transformam Resultados</p>
+        </header>
+        
+        <div class="destaque-amarelo">
+            <p class="texto-destaque">Se tem uma ideia, solução ou visão diferenciada, chegou o momento de colocar sua marca no lugar que ela merece: em destaque internacional.</p>
+            
+            <h2>Um Convite para o Reconhecimento Internacional</h2>
+            <p>Este evento Business gratuito foi criado para empreendedores, empresários e líderes que querem mais do que só vender e ter likes, desejam Relevância, Autoridade e Expansão.</p>
+        </div>
+        
+        <div class="vantagens">
+            <h2>Você terá acesso a:</h2>
+            <ul>
+                <li>Reconhecimento Business Internacional</li>
+                <li>Visibilidade Estratégica</li>
+                <li>Conexões Globais com Empreendedores, Marcas e Investidores</li>
+                <li>Oportunidades Reais de Negócios, Parcerias, Networking e Crescimento Fora do Óbvio</li>
+            </ul>
+        </div>
+        
+        <p class="texto-discreto">
+            Não é sobre mostrar-se, é sobre ser relevante pelo que entrega, representa e transforma.<br>
+            Chegou a hora de ocupar o seu espaço com Estratégia, Presença e Autoridade.<br>
+            A sua marca vale o quanto é percebida. Vamos elevar essa percepção ao nível global.
+        </p>
+        
+        <div class="form-container">
+            <form action="https://formsubmit.co/clubempirebusiness@gmail.com" method="POST">
+                    <!-- Configurações do FormSubmit CORRIGIDAS -->
+                      <input type="hidden" name="_next" value="https://seu-site.com/obrigado.html">
+                      <input type="hidden" name="_subject" value="Novo cadastro - Empire Business">
+                      <input type="hidden" name="_template" value="table">
+                     <input type="hidden" name="_captcha" value="false">
+                       <input type="hidden" name="_autoresponse" value="Obrigado por se inscrever no Empire Business! Em breve nossa equipe entrará em contato.">
+                
+                <div class="form-group">
+                    <label for="name">Nome Completo*</label>
+                    <input type="text" id="name" name="Nome Completo" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="nationality">Nacionalidade*</label>
+                    <input type="text" id="nationality" name="Nacionalidade" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="district">Distrito*</label>
+                    <input type="text" id="district" name="Distrito" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="country">País*</label>
+                    <input type="text" id="country" name="País" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact">Contato com prefixo*</label>
+                    <input type="text" id="contact" name="Contato" placeholder="+351 912 345 678" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="instagram">Instagram</label>
+                    <input type="text" id="instagram" name="Instagram" placeholder="@seuinstagram">
+                </div>
+                
+                <div class="form-group">
+                    <label for="objective">Qual o objetivo da sua marca?*</label>
+                    <textarea id="objective" name="Objetivo da Marca" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Áreas de Atuação*</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="hair" name="Áreas de Atuação" value="Hair">
+                            <label for="hair">Hair</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="nail" name="Áreas de Atuação" value="Nail">
+                            <label for="nail">Nail</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="lash" name="Áreas de Atuação" value="Lash">
+                            <label for="lash">Lash</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="barbeiro" name="Áreas de Atuação" value="Barbeiro">
+                            <label for="barbeiro">Barbeiro</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="estetica" name="Áreas de Atuação" value="Estética">
+                            <label for="estetica">Estética</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="outras_beauty" name="Áreas de Atuação" value="Outras áreas Beauty">
+                            <label for="outras_beauty">Outras áreas Beauty</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="moda" name="Áreas de Atuação" value="Moda">
+                            <label for="moda">Moda</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="saude" name="Áreas de Atuação" value="Saúde">
+                            <label for="saude">Saúde</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="desenvolvimento" name="Áreas de Atuação" value="Desenvolvimento Humano">
+                            <label for="desenvolvimento">Desenvolvimento Humano</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="gestao" name="Áreas de Atuação" value="Gestão e Finanças">
+                            <label for="gestao">Gestão e Finanças</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="eventos" name="Áreas de Atuação" value="Eventos e Networking">
+                            <label for="eventos">Eventos e Networking</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="marketing" name="Áreas de Atuação" value="Marketing e Publicidade">
+                            <label for="marketing">Marketing e Publicidade</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="audiovisual" name="Áreas de Atuação" value="Audiovisual e Fotografia">
+                            <label for="audiovisual">Audiovisual e Fotografia</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="assessoria" name="Áreas de Atuação" value="Assessoria e Consultoria">
+                            <label for="assessoria">Assessoria e Consultoria</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="palestras" name="Áreas de Atuação" value="Palestras e Mentorias">
+                            <label for="palestras">Palestras e Mentorias</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="outras_business" name="Áreas de Atuação" value="Outras áreas Business">
+                            <label for="outras_business">Outras áreas Business</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email*</label>
+                    <input type="email" id="email" name="Email" required>
+                </div>
+                
+                <button type="submit" class="btn">Confirmar Pré-Inscrição</button>
+                
+                <p class="observacoes">
+                    Observações Importantes:<br>
+                    As informações da sua Marca serão tratadas com total sigilo e profissionalismo.<br>
+                    O envio desse formulário confirma o seu interesse e autoriza a nossa equipa a entrar em contacto para alinhamento final.
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
