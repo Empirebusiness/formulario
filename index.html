@@ -250,6 +250,11 @@
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
         }
         
+        .indicacao-campo {
+            margin-top: 10px;
+            display: none;
+        }
+        
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.8rem;
@@ -314,8 +319,8 @@
         
         <div class="form-container">
             <form action="https://formsubmit.co/clubempirebusiness@gmail.com" method="POST">
-                    <!-- Configurações do FormSubmit CORRIGIDAS -->
-                      <input type="hidden" name="_next" value="https://chat.whatsapp.com/DMggAkhotsN2P4bk2qhcFu">
+                    <!-- Configurações do FormSubmit CORRIGIDAS --> 
+                      <input type="hidden" name="_next" value="https://chat.whatsapp.com/HZylxRr5ZUwB6chDGl8NIi">
                       <input type="hidden" name="_subject" value="Novo cadastro - Empire Business">
                       <input type="hidden" name="_template" value="table">
                      <input type="hidden" name="_captcha" value="false">
@@ -426,6 +431,28 @@
                     </div>
                 </div>
                 
+                <!-- Nova seção: Como você nos encontrou? -->
+                <div class="form-group">
+                    <label>Como você nos encontrou?*</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="redes-sociais" name="Como nos encontrou" value="Redes sociais (Instagram, Facebook etc.)">
+                            <label for="redes-sociais">Redes sociais (Instagram, Facebook etc.)</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="google" name="Como nos encontrou" value="Google/pesquisa na internet">
+                            <label for="google">Google/pesquisa na internet</label>
+                        </div>
+                        <div class="checkbox-option">
+                            <input type="checkbox" id="indicacao" name="Como nos encontrou" value="Indicação" onchange="toggleIndicacaoCampo(this)">
+                            <label for="indicacao">Indicação</label>
+                        </div>
+                    </div>
+                    <div id="indicacao-campo-container" class="indicacao-campo">
+                        <input type="text" id="indicacao-nome" name="Indicação (nome)" placeholder="Por favor, informe o nome de quem indicou">
+                    </div>
+                </div>
+                
                 <div class="form-group">
                     <label for="email">Email*</label>
                     <input type="email" id="email" name="Email" required>
@@ -441,5 +468,18 @@
             </form>
         </div>
     </div>
+
+    <script>
+        // Função para mostrar/ocultar o campo de indicação
+        function toggleIndicacaoCampo(checkbox) {
+            const indicacaoCampo = document.getElementById('indicacao-campo-container');
+            if (checkbox.checked) {
+                indicacaoCampo.style.display = 'block';
+            } else {
+                indicacaoCampo.style.display = 'none';
+                document.getElementById('indicacao-nome').value = '';
+            }
+        }
+    </script>
 </body>
 </html>
