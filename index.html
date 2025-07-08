@@ -4,14 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Empire Business - Reconhecimento de Marcas Globais</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --azul-escuro: #0a2540;
             --azul-medio: #1a4b7a;
+            --azul-claro: #2a7bca;
             --amarelo: #ffd700;
             --amarelo-claro: #ffecb3;
             --branco: #ffffff;
             --cinza-claro: #f5f5f7;
+            --preto: #121212;
+            --sombra: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -26,339 +30,661 @@
             color: var(--azul-escuro);
             line-height: 1.6;
             position: relative;
+            overflow-x: hidden;
         }
         
-        /* Marca d'água do brasão */
-        body::after {
-            content: "";
-            background-image: url('seu-brasao.png');
-            background-size: 300px;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.05;
+        /* Efeito de partículas no fundo */
+        .particles {
             position: fixed;
             top: 0;
             left: 0;
-            bottom: 0;
-            right: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
-            pointer-events: none;
+            opacity: 0.1;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><circle cx="20" cy="20" r="1" fill="%230a2540"/><circle cx="50" cy="50" r="1" fill="%230a2540"/><circle cx="80" cy="80" r="1" fill="%230a2540"/></svg>');
+            background-size: 200px 200px;
         }
         
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-        }
-        
-        /* Cabeçalho com espaço para logo */
-        .header-logo {
+        /* Header com efeito glassmorphism */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 5%;
             display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            padding: 20px 0;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
         
-        .logo-container {
-            text-align: center;
+        .main-header.scrolled {
+            background: rgba(10, 37, 64, 0.9);
+            box-shadow: var(--sombra);
+            padding: 15px 5%;
         }
         
-        .logo-img {
-            max-width: 300px;
-            height: auto;
-            margin-bottom: 20px;
+        .logo {
+            height: 50px;
+            transition: all 0.3s;
         }
         
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 0;
-            background: linear-gradient(135deg, var(--azul-escuro), var(--azul-medio));
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
             color: var(--branco);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(10, 37, 64, 0.2);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s;
         }
         
-        header h1 {
-            font-size: 2.5rem;
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--amarelo);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icons a {
+            color: var(--branco);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--amarelo);
+            transform: translateY(-3px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+            color: var(--branco);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.9), rgba(26, 75, 122, 0.8));
+            z-index: -1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
             margin-bottom: 20px;
             color: var(--amarelo);
             line-height: 1.3;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
         }
         
-        header .slogan {
-            font-size: 1.2rem;
+        .hero .slogan {
+            font-size: 1.5rem;
             max-width: 800px;
-            margin: 0 auto 30px;
+            margin: 0 auto 40px;
             font-weight: 300;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
         }
         
-        .destaque-amarelo {
-            background-color: var(--amarelo-claro);
-            padding: 30px;
-            border-radius: 8px;
-            margin: 30px 0;
-            border-left: 5px solid var(--amarelo);
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--branco);
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+            cursor: pointer;
         }
         
-        .destaque-amarelo h2 {
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px;
+            position: relative;
+        }
+        
+        /* Seção de Destaque */
+        .destaque {
+            background: var(--branco);
+            border-radius: 15px;
+            padding: 60px;
+            margin: 50px 0;
+            box-shadow: var(--sombra);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .destaque:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .destaque::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--amarelo), var(--azul-medio));
+        }
+        
+        .destaque h2 {
             color: var(--azul-escuro);
-            margin-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            position: relative;
+        }
+        
+        .destaque h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--amarelo);
         }
         
         .texto-destaque {
             font-size: 1.1rem;
-            line-height: 1.7;
+            line-height: 1.8;
             margin-bottom: 30px;
+            color: var(--azul-escuro);
         }
         
+        /* Seção de Vantagens */
         .vantagens {
-            background-color: var(--branco);
-            padding: 30px;
-            border-radius: 8px;
-            margin: 30px 0;
-            border: 1px solid #e0e0e0;
+            background: var(--branco);
+            border-radius: 15px;
+            padding: 60px;
+            margin: 50px 0;
+            box-shadow: var(--sombra);
         }
         
         .vantagens h2 {
             color: var(--azul-medio);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-align: center;
         }
         
-        .vantagens ul {
-            list-style-type: none;
+        .vantagens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
         
-        .vantagens li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+        .vantagem-item {
+            background: var(--cinza-claro);
+            padding: 30px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vantagem-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .vantagem-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--amarelo);
+        }
+        
+        .vantagem-item h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
         }
         
-        .vantagens li:before {
-            content: "✓";
-            color: var(--amarelo);
-            font-weight: bold;
+        .vantagem-item h3 i {
             margin-right: 10px;
-            font-size: 1.2rem;
+            color: var(--amarelo);
         }
         
-        .texto-discreto {
-            font-size: 0.9rem;
-            color: #666;
-            font-style: italic;
-            margin: 30px 0;
-            text-align: center;
+        .vantagem-item p {
+            color: var(--azul-escuro);
+            line-height: 1.7;
         }
         
-        .observacoes {
-            font-size: 0.8rem;
-            color: #777;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-        
+        /* Formulário */
         .form-container {
-            background-color: var(--branco);
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-            margin-top: 40px;
-            border-top: 5px solid var(--amarelo);
+            background: var(--branco);
+            border-radius: 15px;
+            padding: 60px;
+            margin-top: 50px;
+            box-shadow: var(--sombra);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--amarelo), var(--azul-medio));
+        }
+        
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--azul-escuro);
+            font-size: 2rem;
         }
         
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            position: relative;
         }
         
-        label {
+        .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 600;
             color: var(--azul-escuro);
+            transition: all 0.3s;
         }
         
-        input[type="text"],
-        input[type="email"],
-        textarea,
-        select {
+        .form-control {
             width: 100%;
             padding: 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 8px;
             font-size: 16px;
-            transition: border 0.3s;
+            transition: all 0.3s;
+            background: var(--cinza-claro);
         }
         
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        textarea:focus,
-        select:focus {
+        .form-control:focus {
             border-color: var(--amarelo);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
         }
         
-        textarea {
-            min-height: 120px;
+        textarea.form-control {
+            min-height: 150px;
             resize: vertical;
         }
         
         .checkbox-group {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
+            gap: 15px;
             margin-top: 15px;
         }
         
         .checkbox-option {
             display: flex;
             align-items: center;
-            background-color: #f9f9f9;
-            padding: 8px 12px;
-            border-radius: 4px;
+            background: var(--cinza-claro);
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .checkbox-option:hover {
+            background: rgba(255, 215, 0, 0.1);
         }
         
         .checkbox-option input {
             margin-right: 10px;
+            cursor: pointer;
         }
         
         .btn {
             display: inline-block;
-            background-color: var(--amarelo);
+            background: linear-gradient(135deg, var(--amarelo), #e6c200);
             color: var(--azul-escuro);
-            padding: 16px 32px;
+            padding: 18px 40px;
             text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            text-align: center;
+            border-radius: 50px;
+            font-weight: 700;
             border: none;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 1.1rem;
             width: 100%;
             transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
-        }
-        
-        .btn:hover {
-            background-color: #e6c200;
-            transform: translateY(-2px);
+            position: relative;
+            overflow: hidden;
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
         }
         
-        .indicacao-campo {
-            margin-top: 10px;
-            display: none;
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--azul-escuro);
+            color: var(--branco);
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .footer-logo {
+            margin-bottom: 30px;
+        }
+        
+        .footer-logo img {
+            height: 60px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--branco);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--amarelo);
+        }
+        
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-social a {
+            color: var(--branco);
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+        
+        .footer-social a:hover {
+            color: var(--amarelo);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        /* Animações */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+        
+        /* Responsivo */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .destaque, .vantagens, .form-container {
+                padding: 40px;
+            }
         }
         
         @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8rem;
+            .main-header {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero .slogan {
+                font-size: 1.2rem;
+            }
+            
+            .destaque, .vantagens, .form-container {
+                padding: 30px 20px;
             }
             
             .checkbox-group {
                 grid-template-columns: 1fr;
             }
             
-            .container {
-                padding: 10px;
+            .vantagens-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
             }
             
-            .form-container {
-                padding: 20px;
-            }
-            
-            .logo-img {
-                max-width: 200px;
+            .btn {
+                padding: 15px 30px;
+                font-size: 1rem;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="particles"></div>
+    
+    <!-- Header -->
+    <header class="main-header">
+        <img src="EMPIRE-BUSINESS-logo.png" alt="Empire Business" class="logo">
+        <nav class="nav-links">
+            <a href="#sobre">Sobre</a>
+            <a href="#vantagens">Vantagens</a>
+            <a href="#contato">Contato</a>
+        </nav>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <h1>Pré-Inscrição no Evento Empire Business</h1>
+        <p class="slogan">Ambiente, pessoas e conhecimentos transformam Resultados</p>
+        <div class="scroll-down" onclick="document.getElementById('sobre').scrollIntoView({behavior: 'smooth'})">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+    
+    <!-- Container Principal -->
     <div class="container">
-        <!-- Cabeçalho com espaço para logo -->
-        <div class="header-logo">
-            <div class="logo-container">
-                <!-- Substitua pela sua logo -->
-                <img src="EMPIRE-BUSINESS-logo.png" alt="EMPIRE BUSINESS Logo" class="logo-img">
-            </div>
-        </div>
-        
-        <header>
-            <h1>Pré-Inscrição no Evento Empire Business<br>Reconhecimento de Marcas Globais</h1>
-            <p class="slogan">Ambiente, pessoas e conhecimentos transformam Resultados</p>
-        </header>
-        
-        <div class="destaque-amarelo">
-            <p class="texto-destaque">Se tem uma ideia, solução ou visão diferenciada, chegou o momento de colocar sua marca no lugar que ela merece: em destaque internacional.</p>
-            
+        <!-- Seção Sobre -->
+        <section class="destaque" id="sobre">
             <h2>Um Convite para o Reconhecimento Internacional</h2>
+            <p class="texto-destaque">Se tem uma ideia, solução ou visão diferenciada, chegou o momento de colocar sua marca no lugar que ela merece: em destaque internacional.</p>
             <p>Este evento Business gratuito foi criado para empreendedores, empresários e líderes que querem mais do que só vender e ter likes, desejam Relevância, Autoridade e Expansão.</p>
-        </div>
+        </section>
         
-        <div class="vantagens">
+        <!-- Seção Vantagens -->
+        <section class="vantagens" id="vantagens">
             <h2>Você terá acesso a:</h2>
-            <ul>
-                <li>Reconhecimento Business Internacional</li>
-                <li>Visibilidade Estratégica</li>
-                <li>Conexões Globais com Empreendedores, Marcas e Investidores</li>
-                <li>Oportunidades Reais de Negócios, Parcerias, Networking e Crescimento Fora do Óbvio</li>
-            </ul>
+            <div class="vantagens-grid">
+                <div class="vantagem-item">
+                    <h3><i class="fas fa-globe"></i> Reconhecimento Business Internacional</h3>
+                    <p>Posicione sua marca em um cenário global com o reconhecimento que merece.</p>
+                </div>
+                <div class="vantagem-item">
+                    <h3><i class="fas fa-chart-line"></i> Visibilidade Estratégica</h3>
+                    <p>Ganhe visibilidade nos canais certos para seu negócio decolar.</p>
+                </div>
+                <div class="vantagem-item">
+                    <h3><i class="fas fa-network-wired"></i> Conexões Globais</h3>
+                    <p>Conecte-se com empreendedores, marcas e investidores internacionais.</p>
+                </div>
+                <div class="vantagem-item">
+                    <h3><i class="fas fa-handshake"></i> Oportunidades Reais</h3>
+                    <p>Negócios, parcerias e networking para crescimento fora do óbvio.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Texto Destaque -->
+        <div class="destaque">
+            <p class="texto-destaque">
+                Não é sobre mostrar-se, é sobre ser relevante pelo que entrega, representa e transforma.<br>
+                Chegou a hora de ocupar o seu espaço com Estratégia, Presença e Autoridade.<br>
+                A sua marca vale o quanto é percebida. Vamos elevar essa percepção ao nível global.
+            </p>
         </div>
         
-        <p class="texto-discreto">
-            Não é sobre mostrar-se, é sobre ser relevante pelo que entrega, representa e transforma.<br>
-            Chegou a hora de ocupar o seu espaço com Estratégia, Presença e Autoridade.<br>
-            A sua marca vale o quanto é percebida. Vamos elevar essa percepção ao nível global.
-        </p>
-        
-        <div class="form-container">
+        <!-- Formulário -->
+        <section class="form-container" id="contato">
+            <h2>Pré-Inscrição</h2>
             <form action="https://formsubmit.co/clubempirebusiness@gmail.com" method="POST">
-                    <!-- Configurações do FormSubmit CORRIGIDAS --> 
-                      <input type="hidden" name="_next" value="https://chat.whatsapp.com/HZylxRr5ZUwB6chDGl8NIi">
-                      <input type="hidden" name="_subject" value="Novo cadastro - Empire Business">
-                      <input type="hidden" name="_template" value="table">
-                     <input type="hidden" name="_captcha" value="false">
-                       <input type="hidden" name="_autoresponse" value="Obrigado por se inscrever no Empire Business! Em breve nossa equipe entrará em contato.">
+                <input type="hidden" name="_next" value="https://chat.whatsapp.com/HZylxRr5ZUwB6chDGl8NIi">
+                <input type="hidden" name="_subject" value="Novo cadastro - Empire Business">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_autoresponse" value="Obrigado por se inscrever no Empire Business! Em breve nossa equipe entrará em contato.">
                 
                 <div class="form-group">
                     <label for="name">Nome Completo*</label>
-                    <input type="text" id="name" name="Nome Completo" required>
+                    <input type="text" id="name" name="Nome Completo" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="nationality">Nacionalidade*</label>
-                    <input type="text" id="nationality" name="Nacionalidade" required>
+                    <input type="text" id="nationality" name="Nacionalidade" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="district">Distrito*</label>
-                    <input type="text" id="district" name="Distrito" required>
+                    <input type="text" id="district" name="Distrito" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="country">País*</label>
-                    <input type="text" id="country" name="País" required>
+                    <input type="text" id="country" name="País" class="form-control" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="contact">Contato com prefixo*</label>
-                    <input type="text" id="contact" name="Contato" placeholder="+351 912 345 678" required>
+                    <input type="text" id="contact" name="Contato" class="form-control" placeholder="+351 912 345 678" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="instagram">Instagram</label>
-                    <input type="text" id="instagram" name="Instagram" placeholder="@seuinstagram">
+                    <input type="text" id="instagram" name="Instagram" class="form-control" placeholder="@seuinstagram">
                 </div>
                 
                 <div class="form-group">
                     <label for="objective">Qual o objetivo da sua marca?*</label>
-                    <textarea id="objective" name="Objetivo da Marca" required></textarea>
+                    <textarea id="objective" name="Objetivo da Marca" class="form-control" required></textarea>
                 </div>
                 
                 <div class="form-group">
@@ -431,7 +757,6 @@
                     </div>
                 </div>
                 
-                <!-- Nova seção: Como você nos encontrou? -->
                 <div class="form-group">
                     <label>Como você nos encontrou?*</label>
                     <div class="checkbox-group">
@@ -448,14 +773,14 @@
                             <label for="indicacao">Indicação</label>
                         </div>
                     </div>
-                    <div id="indicacao-campo-container" class="indicacao-campo">
-                        <input type="text" id="indicacao-nome" name="Indicação (nome)" placeholder="Por favor, informe o nome de quem indicou">
+                    <div id="indicacao-campo-container" class="indicacao-campo" style="display: none;">
+                        <input type="text" id="indicacao-nome" name="Indicação (nome)" class="form-control" placeholder="Por favor, informe o nome de quem indicou">
                     </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email*</label>
-                    <input type="email" id="email" name="Email" required>
+                    <input type="email" id="email" name="Email" class="form-control" required>
                 </div>
                 
                 <button type="submit" class="btn">Confirmar Pré-Inscrição</button>
@@ -466,11 +791,40 @@
                     O envio desse formulário confirma o seu interesse e autoriza a nossa equipa a entrar em contacto para alinhamento final.
                 </p>
             </form>
-        </div>
+        </section>
     </div>
-
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="EMPIRE-BUSINESS-logo.png" alt="Empire Business">
+            </div>
+            <div class="footer-links">
+                <a href="#inicio">Início</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#vantagens">Vantagens</a>
+                <a href="#contato">Contato</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="copyright">
+                © 2023 Empire Business. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+    
     <script>
-        // Função para mostrar/ocultar o campo de indicação
+        // Efeito de scroll no header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.main-header');
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+        
+        // Mostrar/ocultar campo de indicação
         function toggleIndicacaoCampo(checkbox) {
             const indicacaoCampo = document.getElementById('indicacao-campo-container');
             if (checkbox.checked) {
@@ -480,6 +834,27 @@
                 document.getElementById('indicacao-nome').value = '';
             }
         }
+        
+        // Efeito "magnetic" nos botões
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                btn.style.setProperty('--x', `${x}px`);
+                btn.style.setProperty('--y', `${y}px`);
+            });
+        });
+        
+        // Scroll suave para links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
     </script>
 </body>
 </html>
